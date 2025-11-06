@@ -1,10 +1,3 @@
-"""Financial planning utilities for the Gerpro technical test.
-
-This module provides a function that receives the commercial and
-construction cash movements for the sub-stages of a project and
-produces the schedule of credit disbursements and contributions
-required to keep the leveraged cash flow non-negative.
-"""
 
 from __future__ import annotations
 
@@ -14,7 +7,7 @@ from typing import Dict, Iterable, List, Tuple
 
 @dataclass(frozen=True)
 class Movement:
-    """Normalized representation of a monthly movement."""
+
 
     subetapa: str
     valor: float
@@ -22,8 +15,7 @@ class Movement:
     concepto: str
 
     @classmethod
-    def from_raw(cls, raw: Dict) -> "Movement":
-        """Build a movement instance from a dictionary, performing validation."""
+    def from_raw(cls, raw: Dict) ->
         try:
             subetapa = str(raw["subetapa"])
             valor = float(raw["valor"])
@@ -49,22 +41,7 @@ def calculate_financing_plan(
     credit_end_period: int,
     annual_interest_rate: float,
 ) -> Tuple[List[Dict[str, float]], List[Dict[str, float]]]:
-    """Compute the credit disbursement plan and equity contributions.
 
-    Args:
-        movements: Iterable of dictionaries that describe the monthly movements.
-        credit_limit: Maximum credit amount available for the project.
-        max_monthly_draw_percentage: Upper bound (0-1) of the credit that can be
-            disbursed in a single period.
-        credit_start_period: First period in which the credit is available.
-        credit_end_period: Last period in which the credit can be disbursed.
-        annual_interest_rate: Annual nominal interest rate expressed as a decimal.
-
-    Returns:
-        Tuple made of:
-            - List of dictionaries representing the credit disbursements per period.
-            - List of dictionaries representing the equity contributions per period.
-    """
     if credit_limit < 0:
         raise ValueError("El cupo del credito no puede ser negativo.")
 
