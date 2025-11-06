@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Plan financiero{% endblock %}
+
+{% block content %}
+<h1>Generar plan financiero</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+        <small>{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <div class="messages">
+            {% for error in field.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% if form.non_field_errors %}
+    <div class="messages">
+        {% for error in form.non_field_errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit">Calcular</button>
+</form>
+
+{% if disbursements %}
+    <h2>Resultados para {{ project_name }}</h2>
+    <h3>Desembolsos del crédito</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">Periodo</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in disbursements %}
+            <tr>
+                <td style="text-align:left;">{{ item.periodo }}</td>
+                <td>${{ item.valor|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Aportes de capital requeridos</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left;">Periodo</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in contributions %}
+            <tr>
+                <td style="text-align:left;">{{ item.periodo }}</td>
+                <td>${{ item.valor|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <p>Total desembolsado del crédito: ${{ total_disbursement|floatformat:2 }}</p>
+        <p>Total aportes de capital: ${{ total_contribution|floatformat:2 }}</p>
+    </div>
+{% endif %}
+{% endblock %}
+
