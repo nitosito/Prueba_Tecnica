@@ -1,12 +1,4 @@
-"""Django models that capture the entities described in the technical test.
 
-Entity relationship summary:
-    Project 1---* SubStage 1---* CashFlowEntry
-    Project 1---1 ConstructionCredit 1---* CreditDraw
-    Project 1---* CapitalContribution (optional record of manual funding)
-
-All monetary fields use Decimal to avoid floating point rounding issues.
-"""
 
 from __future__ import annotations
 
