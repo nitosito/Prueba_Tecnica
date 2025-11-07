@@ -1,4 +1,3 @@
-"""CLI helper to run the financing plan with user-provided parameters."""
 
 from __future__ import annotations
 
